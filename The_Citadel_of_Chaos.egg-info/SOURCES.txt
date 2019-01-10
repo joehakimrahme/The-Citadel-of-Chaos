@@ -1,0 +1,16 @@
+AUTHORS
+ChangeLog
+README.md
+setup.cfg
+setup.py
+The_Citadel_of_Chaos.egg-info/PKG-INFO
+The_Citadel_of_Chaos.egg-info/SOURCES.txt
+The_Citadel_of_Chaos.egg-info/dependency_links.txt
+The_Citadel_of_Chaos.egg-info/entry_points.txt
+The_Citadel_of_Chaos.egg-info/not-zip-safe
+The_Citadel_of_Chaos.egg-info/pbr.json
+The_Citadel_of_Chaos.egg-info/top_level.txt
+tcoc/__init__.py
+tcoc/hero.py
+tcoc/tests/__init__.py
+tcoc/tests/test_hero.py
