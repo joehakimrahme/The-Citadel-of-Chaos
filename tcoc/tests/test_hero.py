@@ -27,38 +27,50 @@ class TestDice(unittest.TestCase):
 
 class TestHero(unittest.TestCase):
 
+    def setUp(self):
+        self.test_hero = hero.Hero()
+        self.test_hero.magic_random_init()
+
     def test_random_heros(self):
         heroes = [hero.Hero() for _ in range(1000)]
-        self.assertTrue(all(7 <= x.skill <= 12 for x in heroes),
+        self.assertTrue(all(7 <= h.skill <= 12 for h in heroes),
                         "Not all heroes have normal skills")
-        self.assertTrue(all(14 <= x.stamina <= 24 for x in heroes),
+        self.assertTrue(all(14 <= h.stamina <= 24 for h in heroes),
                         "Not all heroes have normal stamina")
-        self.assertTrue(all(7 <= x.luck <= 12 for x in heroes),
+        self.assertTrue(all(7 <= h.luck <= 12 for h in heroes),
                         "Not all heroes have normal luck")
 
     def test_hero_skill(self):
-        test_hero = hero.Hero()
-        test_hero.skill += 100
-        self.assertTrue(7 <= test_hero.skill <= 12,
+        _init_value = self.test_hero.skill
+        self.test_hero.skill += 100
+        self.assertTrue(7 <= self.test_hero.skill <= 12,
                         "hero skill increased beyond initial value")
-        test_hero.skill -= 100
-        self.assertEqual(test_hero.skill, 0,
+        self.test_hero.skill -= 100
+        self.assertEqual(self.test_hero.skill, 0,
                          "hero skill decreased beyond zero")
+        self.test_hero.skill = _init_value
 
     def test_hero_stamina(self):
-        test_hero = hero.Hero()
-        test_hero.stamina += 100
-        self.assertTrue(14 <= test_hero.stamina <= 24,
+        _init_value = self.test_hero.stamina
+        self.test_hero.stamina += 100
+        self.assertTrue(14 <= self.test_hero.stamina <= 24,
                         "hero stamina increased beyond initial value")
-        test_hero.stamina -= 100
-        self.assertEqual(test_hero.stamina, 0,
+        self.test_hero.stamina -= 100
+        self.assertEqual(self.test_hero.stamina, 0,
                          "hero skill decreased beyond zero")
+        self.test_hero.stamina = _init_value
 
     def test_hero_luck(self):
-        test_hero = hero.Hero()
-        test_hero.luck += 100
-        self.assertTrue(7 <= test_hero.luck <= 12,
+        _init_value = self.test_hero.luck
+        self.test_hero.luck += 100
+        self.assertTrue(7 <= self.test_hero.luck <= 12,
                         "hero luck increased beyond initial value")
-        test_hero.luck -= 100
-        self.assertEqual(test_hero.luck, 0,
+        self.test_hero.luck -= 100
+        self.assertEqual(self.test_hero.luck, 0,
                          "hero luck decreased beyond zero")
+        self.test_hero.luck = _init_value
+
+    def test_random_magic(self):
+        self.assertEqual(len(self.test_hero.equipped_spells),
+                         self.test_hero.magic,
+                         "hero didn't equip the correct amount of spells")

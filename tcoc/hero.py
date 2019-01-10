@@ -3,6 +3,21 @@ import random
 
 class Hero(object):
 
+    spells = (
+        "Creature Copy",
+        "E.S.P.",
+        "Fire",
+        "Fool's Gold",
+        "Illusion",
+        "Levitation",
+        "Luck",
+        "Shielding",
+        "Skill",
+        "Stamina",
+        "Strength",
+        "Weakness",
+    )
+
     # This method can probably be moved to a separate module later
     @staticmethod
     def dice_roll(dice_count=1):
@@ -27,6 +42,9 @@ class Hero(object):
         if self._attributes["luck"] is None:
             self._attributes["luck"] = self.dice_roll(1) + 6
             self.initial_luck = self._attributes["luck"]
+        self.equipped_spells = []
+        self.gold = 0
+        self.equipment = ['sword', 'leather armor', 'lantern', 'backpack']
 
     @property
     def skill(self):
@@ -90,3 +108,7 @@ class Hero(object):
         if self._attributes["magic"] is None:
             self._attributes["magic"] = self.dice_roll(2) + 6
         return self._attributes["magic"]
+
+    def magic_random_init(self):
+        for _ in range(self.magic):
+            self.equipped_spells.append(random.choice(Hero.spells))
