@@ -3,6 +3,7 @@ ChangeLog
 README.md
 setup.cfg
 setup.py
+tox.ini
 The_Citadel_of_Chaos.egg-info/PKG-INFO
 The_Citadel_of_Chaos.egg-info/SOURCES.txt
 The_Citadel_of_Chaos.egg-info/dependency_links.txt
