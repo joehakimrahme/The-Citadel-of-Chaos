@@ -8,7 +8,7 @@ class TestDice(unittest.TestCase):
 
     def test_simple_dice_roll(self):
         # Simple, every result should be a number in the range [1, 6]
-        rolls = [hero.Hero.dice_roll(1) for _ in range(1000)]
+        rolls = [hero.Hero.dice_roll(1) for _ in range(10000)]
         self.assertTrue(all(0 < x <= 6 for x in rolls),
                         "Not all rolls of a single dice return a number "
                         "in the range [1, 6]")
@@ -17,12 +17,13 @@ class TestDice(unittest.TestCase):
         # As you would surely know if you've ever played The Settlers
         # of Catan, you know that the most common result of a 2-dice
         # roll is 7.
+        # (Note): RNG being RNG, this test has failed randomly twice
         rolls_counter = collections.Counter(
-            hero.Hero.dice_roll(2) for _ in range(1000))
+            hero.Hero.dice_roll(2) for _ in range(10000))
         most_common = max(rolls_counter, key=lambda x: rolls_counter[x])
         self.assertEqual(most_common,
                          7,
-                         "7 is not the most commonresult for 2-dice rolls")
+                         "7 is not the most common result for 2-dice rolls")
 
 
 class TestHero(unittest.TestCase):
@@ -74,3 +75,29 @@ class TestHero(unittest.TestCase):
         self.assertEqual(len(self.test_hero.equipped_spells),
                          self.test_hero.magic,
                          "hero didn't equip the correct amount of spells")
+
+    def test_quickcombat_win(self):
+        _monster = hero.Monster(0, 1)
+        win, winner = self.test_hero.quick_combat(_monster)
+        self.assertTrue(win, "Lost unlosable quick combat")
+        self.assertEqual(winner, self.test_hero, "Wrong winner returned")
+
+
+class TestMonster(unittest.TestCase):
+
+    def setUp(self):
+        self.test_monster = hero.Monster(10, 10)
+
+    def test_monster_stamina_percentage(self):
+        # remove half stamina
+        self.test_monster.stamina -= 3
+        self.assertEqual(self.test_monster.stamina_percentage, 0.7)
+
+    def test_monster_winpercentage(self):
+        win, survival, flawless = self.test_monster.winpercentage(10000)
+        self.assertTrue(0 <= win <= 1,
+                        "Wrong value for wins: {}".format(win))
+        self.assertTrue(0 <= survival <= 1,
+                        "Wrong value for survival: {}".format(survival))
+        self.assertTrue(0 <= flawless <= 1,
+                        "Wrong value for survival: {}".format(flawless))

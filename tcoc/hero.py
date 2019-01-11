@@ -66,6 +66,10 @@ class Hero(object):
         self._attributes["skill"] = switch[True]
 
     @property
+    def stamina_percentage(self):
+        return self.stamina / self.initial_stamina
+
+    @property
     def stamina(self):
         return self._attributes["stamina"]
 
@@ -112,3 +116,52 @@ class Hero(object):
     def magic_random_init(self):
         for _ in range(self.magic):
             self.equipped_spells.append(random.choice(Hero.spells))
+
+    def quick_combat(self, monster, verbose=False):
+        while (self.stamina > 0 and monster.stamina > 0):
+            #print("HP: {} {}".format(self.stamina, monster.stamina))
+            hero_attack = self.dice_roll(2) + self.skill
+            monster_attack = self.dice_roll(2) + monster.skill
+            #print("Rolls: {} {}".format(hero_attack, monster_attack))
+            if (hero_attack > monster_attack):
+                monster.stamina -= 2
+            elif (hero_attack < monster_attack):
+                self.stamina -= 2
+        if self.stamina > 0:
+            if verbose:
+                print(self)
+            return (True, self)
+        else:
+            if verbose:
+                print(monster)
+            return (False, monster)
+
+    def __repr__(self):
+        return "H({}, {}, {}, {})".format(self.skill,
+                                          self.stamina,
+                                          self.luck,
+                                          self.magic)
+
+class Monster(object):
+
+    def __init__(self, skill, stamina):
+        self.skill = skill
+        self.stamina = stamina
+        self.initial_stamina = stamina
+
+    @property
+    def stamina_percentage(self):
+        return self.stamina / self.initial_stamina
+
+    def winpercentage(self, population=1000):
+        combats = [Hero().quick_combat(self) for _ in range(population)]
+        win_percentage = sum(1 for win, h in combats if win) / population
+        survival_stamina = [h.stamina_percentage for win, h in combats if win]
+        survival_percentage = sum(survival_stamina) / len(survival_stamina)
+        flawless_victory = sum(1 for win, h in combats if win and
+                               h.stamina_percentage == 1.0) / population
+        return win_percentage, survival_percentage, flawless_victory
+
+    def __repr__(self):
+        return "M({}, {})".format(self.skill, self.stamina)
+
