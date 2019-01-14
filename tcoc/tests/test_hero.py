@@ -101,3 +101,14 @@ class TestMonster(unittest.TestCase):
                         "Wrong value for survival: {}".format(survival))
         self.assertTrue(0 <= flawless <= 1,
                         "Wrong value for survival: {}".format(flawless))
+
+    def test_monster_winpercentage_specific_hero(self):
+        test_hero = hero.Hero()
+        win, survival, flawless = self.test_monster.winpercentage(
+            10000, hero=test_hero)
+        self.assertTrue(0 <= win <= 1,
+                        "Wrong value for wins: {}".format(win))
+        self.assertTrue(0 <= survival <= 1,
+                        "Wrong value for survival: {}".format(survival))
+        self.assertTrue(0 <= flawless <= 1,
+                        "Wrong value for survival: {}".format(flawless))

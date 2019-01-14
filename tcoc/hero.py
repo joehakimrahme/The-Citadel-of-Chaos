@@ -153,11 +153,14 @@ class Monster(object):
     def stamina_percentage(self):
         return self.stamina / self.initial_stamina
 
-    def winpercentage(self, population=1000):
-        combats = [Hero().quick_combat(self) for _ in range(population)]
+    def winpercentage(self, population=1000, hero=None):
+        if hero is None:
+            combats = [Hero().quick_combat(self) for _ in range(population)]
+        else:
+            combats = [hero.quick_combat(self) for _ in range(population)]
         win_percentage = sum(1 for win, h in combats if win) / population
         survival_stamina = [h.stamina_percentage for win, h in combats if win]
-        survival_percentage = sum(survival_stamina) / len(survival_stamina)
+        survival_percentage = sum(survival_stamina) / population
         flawless_victory = sum(1 for win, h in combats if win and
                                h.stamina_percentage == 1.0) / population
         return win_percentage, survival_percentage, flawless_victory
