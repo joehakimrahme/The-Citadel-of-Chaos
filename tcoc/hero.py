@@ -67,7 +67,7 @@ class Hero(object):
 
     @property
     def stamina_percentage(self):
-        return self.stamina / self.initial_stamina
+        return self.stamina * 1.0 / self.initial_stamina
 
     @property
     def stamina(self):
@@ -119,10 +119,12 @@ class Hero(object):
 
     def quick_combat(self, monster, verbose=False):
         while (self.stamina > 0 and monster.stamina > 0):
-            #print("HP: {} {}".format(self.stamina, monster.stamina))
+            if verbose:
+                print("HP: {} {}".format(self.stamina, monster.stamina))
             hero_attack = self.dice_roll(2) + self.skill
             monster_attack = self.dice_roll(2) + monster.skill
-            #print("Rolls: {} {}".format(hero_attack, monster_attack))
+            if verbose:
+                print("Rolls: {} {}".format(hero_attack, monster_attack))
             if (hero_attack > monster_attack):
                 monster.stamina -= 2
             elif (hero_attack < monster_attack):
@@ -142,6 +144,7 @@ class Hero(object):
                                           self.luck,
                                           self.magic)
 
+
 class Monster(object):
 
     def __init__(self, skill, stamina):
@@ -151,7 +154,7 @@ class Monster(object):
 
     @property
     def stamina_percentage(self):
-        return self.stamina / self.initial_stamina
+        return self.stamina * 1.0 / self.initial_stamina
 
     def winpercentage(self, population=1000, hero=None):
         if hero is None:
@@ -167,4 +170,3 @@ class Monster(object):
 
     def __repr__(self):
         return "M({}, {})".format(self.skill, self.stamina)
-

@@ -71,6 +71,12 @@ class TestHero(unittest.TestCase):
                          "hero luck decreased beyond zero")
         self.test_hero.luck = _init_value
 
+    def test_hero_stamina_percentage(self):
+        self.test_hero.stamina -= 1
+        self.assertTrue(0 < self.test_hero.stamina_percentage < 1,
+                        "hero stamina percentage is not a normal "
+                        "ratio: %s" % self.test_hero.stamina_percentage)
+
     def test_random_magic(self):
         self.assertEqual(len(self.test_hero.equipped_spells),
                          self.test_hero.magic,
@@ -89,7 +95,6 @@ class TestMonster(unittest.TestCase):
         self.test_monster = hero.Monster(10, 10)
 
     def test_monster_stamina_percentage(self):
-        # remove half stamina
         self.test_monster.stamina -= 3
         self.assertEqual(self.test_monster.stamina_percentage, 0.7)
 
