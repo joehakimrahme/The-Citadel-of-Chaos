@@ -78,9 +78,24 @@ class TestHero(unittest.TestCase):
                         "ratio: %s" % self.test_hero.stamina_percentage)
 
     def test_random_magic(self):
-        self.assertEqual(len(self.test_hero.equipped_spells),
-                         self.test_hero.magic,
+        spells = sum(self.test_hero.equipped_spells[x] for x in
+                     self.test_hero.equipped_spells)
+
+        self.assertEqual(spells, self.test_hero.magic,
                          "hero didn't equip the correct amount of spells")
+
+    def test_random_magic_cast(self):
+        start = sum(self.test_hero.equipped_spells[x] for x in
+                    self.test_hero.equipped_spells)
+        first_spell = next(iter(self.test_hero.equipped_spells))
+        self.test_hero.magic_cast(first_spell)
+        end = sum(self.test_hero.equipped_spells[x] for x in
+                  self.test_hero.equipped_spells)
+        self.assertEqual(
+            start - end,
+            1,
+            "cast fail {} {}".format(
+                self.test_hero, self.test_hero.equipped_spells))
 
     def test_quickcombat_win(self):
         _monster = hero.Monster(0, 1)

@@ -1,3 +1,4 @@
+import collections
 import random
 
 
@@ -42,7 +43,7 @@ class Hero(object):
         if self._attributes["luck"] is None:
             self._attributes["luck"] = self.dice_roll(1) + 6
             self.initial_luck = self._attributes["luck"]
-        self.equipped_spells = []
+        self.equipped_spells = collections.Counter()
         self.gold = 0
         self.equipment = ['sword', 'leather armor', 'lantern', 'backpack']
 
@@ -115,7 +116,12 @@ class Hero(object):
 
     def magic_random_init(self):
         for _ in range(self.magic):
-            self.equipped_spells.append(random.choice(Hero.spells))
+            spell = random.choice(Hero.spells)
+            self.equipped_spells[spell] += 1
+
+    def magic_cast(self, spell):
+        if self.equipped_spells[spell] > 0:
+            self.equipped_spells[spell] -= 1
 
     def quick_combat(self, monster, verbose=False):
         while (self.stamina > 0 and monster.stamina > 0):
