@@ -177,7 +177,7 @@ class Hero(object):
             self.attack_round(target, enemy, verbose)
 
         if verbose:
-            print("Result: {} {} {}".format(self, ally, enemy)
+            print("Result: {} {} {}".format(self, ally, enemy))
 
         return (self, ally, enemy)
 
@@ -213,33 +213,3 @@ class Monster(object):
 
     def __repr__(self):
         return "M({}, {})".format(self.skill, self.stamina)
-
-
-# def adventure(**kwargs):
-#     h = Hero(**kwargs)
-#     h.magic_random_init()
-#     h.quick_combat(Monster(5, 6))
-#     h.quick_combat(Monster(6, 4))
-#     h.quick_combat(Monster(5, 7))
-#     h.quick_combat_ally(Monster(7, 4), Monster(8,8))
-#     return h
-
-
-# def foo(population=10000, **kwargs):
-#     print("running simulation on population: {}".format(population))
-#     a = [adventure(**kwargs) for _ in range(population)]
-#     losers = [x for x in a if x.stamina == 0]
-#     winners = [x for x in a if x.stamina > 0]
-#     print("Win percentage: {}".format(len(winners) * 100.0 / population))
-#     average_skill_winning = sum([hero.skill for hero in winners]) *
-#                                 1.0 / len(winners)
-#     print("Average skill of winners: {}".format(average_skill_winning))
-
-#     average_init_stamina_winning = sum([hero.initial_stamina for
-#                                        hero in winners]) * 1.0 / len(winners)
-
-#     print("Average init stamina of winners: {}".format(
-#            average_init_stamina_winning))
-
-#     average_global_skill = sum([hero.skill for hero in a]) * 1.0 / len(a)
-#     print("Average global skill:{}".format(average_global_skill))

@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Adds a quick combat with allies
 * Rewrites equipped\_spells
 * Adds proper tests for stamina percentage
 * Adds the ability to run winpercentage tests against specific hero
