@@ -123,18 +123,26 @@ class Hero(object):
         if self.equipped_spells[spell] > 0:
             self.equipped_spells[spell] -= 1
 
+    @staticmethod
+    def attack_round(player1, player2, verbose=False):
+        if verbose:
+            print("Round Begin: {} {}".format(
+                player1.stamina, player2.stamina))
+        attack1 = Hero.dice_roll(2) + player1.skill
+        attack2 = Hero.dice_roll(2) + player2.skill
+        if verbose:
+            print("Attacks: {} {}".format(attack1, attack2))
+
+        if attack1 > attack2:
+            player2.stamina -= 2
+        if attack2 > attack1:
+            player1.stamina -= 2
+
     def quick_combat(self, monster, verbose=False):
         while (self.stamina > 0 and monster.stamina > 0):
             if verbose:
                 print("HP: {} {}".format(self.stamina, monster.stamina))
-            hero_attack = self.dice_roll(2) + self.skill
-            monster_attack = self.dice_roll(2) + monster.skill
-            if verbose:
-                print("Rolls: {} {}".format(hero_attack, monster_attack))
-            if (hero_attack > monster_attack):
-                monster.stamina -= 2
-            elif (hero_attack < monster_attack):
-                self.stamina -= 2
+            self.attack_round(self, monster, verbose)
         if self.stamina > 0:
             if verbose:
                 print(self)
@@ -143,6 +151,35 @@ class Hero(object):
             if verbose:
                 print(monster)
             return (False, monster)
+
+    def quick_combat_ally(self, ally, enemy, verbose=False):
+        while all((x.stamina > 0 for x in (self, enemy))):
+            # Before starting each Attack Round, roll one die, if the
+            # number is odd, the tall man will attack the shorter man
+            # first and you personally may ignore that Attack Round
+            # (although you must still roll for the short man). If the
+            # number is even , the tall man goes for you (and the
+            # shorter man can ignore that Attack Round). If the
+            # shorter man dies during battle, the taller man will
+            # finish off the battle with you.
+            ally_alive = ally.stamina > 0
+            if ally_alive:
+                target_roll = self.dice_roll(1)
+                if target_roll % 2 == 1:
+                    target = ally
+                else:
+                    target = self
+            else:
+                target = self
+
+            if verbose:
+                print("Target: {}".format(target))
+            self.attack_round(target, enemy, verbose)
+
+        if verbose:
+            print("Result: {} {} {}".format(self, ally, enemy)
+
+        return (self, ally, enemy)
 
     def __repr__(self):
         return "H({}, {}, {}, {})".format(self.skill,
@@ -176,3 +213,33 @@ class Monster(object):
 
     def __repr__(self):
         return "M({}, {})".format(self.skill, self.stamina)
+
+
+# def adventure(**kwargs):
+#     h = Hero(**kwargs)
+#     h.magic_random_init()
+#     h.quick_combat(Monster(5, 6))
+#     h.quick_combat(Monster(6, 4))
+#     h.quick_combat(Monster(5, 7))
+#     h.quick_combat_ally(Monster(7, 4), Monster(8,8))
+#     return h
+
+
+# def foo(population=10000, **kwargs):
+#     print("running simulation on population: {}".format(population))
+#     a = [adventure(**kwargs) for _ in range(population)]
+#     losers = [x for x in a if x.stamina == 0]
+#     winners = [x for x in a if x.stamina > 0]
+#     print("Win percentage: {}".format(len(winners) * 100.0 / population))
+#     average_skill_winning = sum([hero.skill for hero in winners]) *
+#                                 1.0 / len(winners)
+#     print("Average skill of winners: {}".format(average_skill_winning))
+
+#     average_init_stamina_winning = sum([hero.initial_stamina for
+#                                        hero in winners]) * 1.0 / len(winners)
+
+#     print("Average init stamina of winners: {}".format(
+#            average_init_stamina_winning))
+
+#     average_global_skill = sum([hero.skill for hero in a]) * 1.0 / len(a)
+#     print("Average global skill:{}".format(average_global_skill))
