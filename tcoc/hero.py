@@ -36,13 +36,13 @@ class Hero(object):
         # values
         if self._attributes["skill"] is None:
             self._attributes["skill"] = self.dice_roll(1) + 6
-            self.initial_skill = self._attributes["skill"]
+        self.initial_skill = self._attributes["skill"]
         if self._attributes["stamina"] is None:
             self._attributes["stamina"] = self.dice_roll(2) + 12
-            self.initial_stamina = self._attributes["stamina"]
+        self.initial_stamina = self._attributes["stamina"]
         if self._attributes["luck"] is None:
             self._attributes["luck"] = self.dice_roll(1) + 6
-            self.initial_luck = self._attributes["luck"]
+        self.initial_luck = self._attributes["luck"]
         self.equipped_spells = collections.Counter()
         self.gold = 0
         self.equipment = ['sword', 'leather armor', 'lantern', 'backpack']
@@ -57,13 +57,11 @@ class Hero(object):
 
     @skill.setter
     def skill(self, value):
-        print(value, self.initial_skill)
         switch = {
             True: value,
             value > self.initial_skill: self.initial_skill,
             value < 0: 0,
         }
-        print(switch)
         self._attributes["skill"] = switch[True]
 
     @property
@@ -103,6 +101,12 @@ class Hero(object):
             value < 0: 0,
         }
         self._attributes["luck"] = switch[True]
+
+    @property
+    def is_lucky(self):
+        success = self.dice_roll(2) <= self.luck
+        self.luck -= 1
+        return success
 
     @property
     def magic(self):

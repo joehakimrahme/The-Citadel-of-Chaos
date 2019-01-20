@@ -12,6 +12,7 @@ The_Citadel_of_Chaos.egg-info/not-zip-safe
 The_Citadel_of_Chaos.egg-info/pbr.json
 The_Citadel_of_Chaos.egg-info/top_level.txt
 tcoc/__init__.py
+tcoc/game.py
 tcoc/hero.py
 tcoc/tests/__init__.py
 tcoc/tests/test_hero.py

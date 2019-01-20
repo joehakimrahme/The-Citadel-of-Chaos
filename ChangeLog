@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* Adds an 'is\_lucky' method
+* Rewrites equipped\_spells
 * Adds a quick combat with allies
 * Rewrites equipped\_spells
 * Adds proper tests for stamina percentage
