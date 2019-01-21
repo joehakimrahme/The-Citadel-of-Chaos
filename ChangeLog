@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Adds the LICENSE file
 * Adds an 'is\_lucky' method
 * Rewrites equipped\_spells
 * Adds a quick combat with allies

@@ -1,5 +1,6 @@
 AUTHORS
 ChangeLog
+LICENSE
 README.md
 setup.cfg
 setup.py
